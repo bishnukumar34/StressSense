@@ -1,0 +1,89 @@
+# ---------------------------------------------------------------------------
+# StressSense - Android / Kotlin / Gradle
+# Ignores generated, machine-local, and secret material.
+# NOTE: source code, tests, the Gradle wrapper, the model JSON assets, the
+# README and build scripts are intentionally NOT ignored.
+# ---------------------------------------------------------------------------
+
+# --- Gradle ----------------------------------------------------------------
+.gradle/
+**/build/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# --- Kotlin ----------------------------------------------------------------
+.kotlin/
+**/.kotlin/
+
+# --- Android Studio / IntelliJ --------------------------------------------
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/deploymentTargetSelector.xml
+.idea/gradle.xml
+.idea/usage.statistics.xml
+.idea/dictionaries/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# --- Machine-local configuration ------------------------------------------
+# Contains the local Android SDK path; must never be committed.
+local.properties
+local.defaults.properties
+
+# --- Signing material & secrets -------------------------------------------
+# Never commit keystores, signing config, or credentials.
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.key
+*.der
+*.crt
+keystore.properties
+signing.properties
+secrets.properties
+google-services.json
+FirebaseService-Account.json
+.env
+.env.*
+
+# --- Build outputs --------------------------------------------------------
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+output.json
+*.log
+logs/
+*.hprof
+*.iml.lint.xml
+
+# --- Test / coverage output ----------------------------------------------
+coverage/
+**/coverage/
+test-results/
+*.lcov
+report.html
+
+# --- OS / editor noise ---------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.idea/**/shelf/
+.vscode/
+*.tmp

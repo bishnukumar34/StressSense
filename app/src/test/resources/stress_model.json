@@ -1,0 +1,11 @@
+﻿{
+  "version": 2,
+  "type": "on_device_logistic_regression_research_baseline",
+  "features": ["hr_z", "hrv_z", "resting_hr_z", "sleep_z", "steps_z"],
+  "weights": [2.6, -3.4, 1.4, -0.7, 0.25],
+  "bias": -0.5,
+  "input": "real Health Connect measurements",
+  "training_note": "Research baseline for the SIH prototype. The model is not clinically validated and must be retrained on labelled field data before deployment.",
+  "research_basis": "WESAD and the 2025 systematic review supplied by the project team",
+  "superseded_by": "stress_model_ml.json - validated leave-one-subject-out logistic regression; see ml/REPORT.md"
+}

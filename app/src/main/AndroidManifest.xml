@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+      Package visibility for the Welltory integration.
+
+      Android 11+ (targetSdkVersion >= 30) hides other installed packages by default, so without this
+      declaration resolveActivity() cannot see whether Welltory is installed and the app cannot tell
+      "measure now" apart from "Welltory is not installed". Declared exactly as Welltory's official
+      integration documentation specifies.
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="welltory" />
+        </intent>
+    </queries>
+
+    <!-- Heart Rate -->
+    <uses-permission
+        android:name="android.permission.health.READ_HEART_RATE" />
+
+    <!-- Heart Rate Variability -->
+    <uses-permission
+        android:name="android.permission.health.READ_HEART_RATE_VARIABILITY" />
+
+    <!-- Resting Heart Rate -->
+    <uses-permission
+        android:name="android.permission.health.READ_RESTING_HEART_RATE" />
+
+    <!-- Sleep -->
+    <uses-permission
+        android:name="android.permission.health.READ_SLEEP" />
+
+    <!-- Steps -->
+    <uses-permission
+        android:name="android.permission.health.READ_STEPS" />
+
+    <!-- Respiratory Rate -->
+    <uses-permission
+        android:name="android.permission.health.READ_RESPIRATORY_RATE" />
+
+    <!-- Oxygen Saturation -->
+    <uses-permission
+        android:name="android.permission.health.READ_OXYGEN_SATURATION" />
+
+    <uses-permission android:name="android.permission.health.READ_DISTANCE" />
+    <uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED" />
+    <uses-permission android:name="android.permission.health.READ_EXERCISE" />
+    <uses-permission android:name="android.permission.health.READ_FLOORS_CLIMBED" />
+    <uses-permission android:name="android.permission.health.READ_HEIGHT" />
+    <uses-permission android:name="android.permission.health.READ_WEIGHT" />
+
+    <!-- Camera: rear camera + torch used for the on-device camera PPG HRV measurement. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.StressWelfareBridge">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <!--
+          Welltory measurement callback.
+
+          Welltory launches this activity from its own process to deliver the measurement result, so it
+          MUST be exported="true" - that is an explicit requirement of their integration
+          documentation, and the activity would be unreachable without it.
+
+          singleTask gives the other documented lifecycle guarantee: when StressSense is still alive,
+          returning from Welltory reuses this instance and delivers onNewIntent() instead of stacking
+          duplicates. The activity also handles onCreate() for the case where Android recreated the
+          process while the measurement was in progress.
+
+          No intent-filter is declared because Welltory addresses this activity explicitly by the
+          "package/activity" callback parameter passed in the measurement URL, not via a deep link.
+        -->
+        <activity
+            android:name=".welltory.WelltoryCallbackActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- Health Connect permission rationale -->
+        <activity
+            android:name=".PermissionsRationaleActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
+
+        </activity>
+
+        <!-- Android 14+ Health Connect permission usage -->
+        <activity-alias
+            android:name="ViewPermissionUsageActivity"
+            android:exported="true"
+            android:targetActivity=".PermissionsRationaleActivity"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+            </intent-filter>
+
+        </activity-alias>
+
+    </application>
+
+</manifest>
